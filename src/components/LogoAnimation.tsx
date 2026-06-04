@@ -1,49 +1,65 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import logo from "@/assets/logo.png";
+import text from "@/assets/text.png";
 
 const LogoAnimation = () => {
-  const [showText, setShowText] = useState(true);
+  const [phase, setPhase] = useState<"text" | "logo">("text");
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowText(false);
-    }, 2000); // text stays for 2s
+      setPhase("logo");
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div
-  className="flex items-center justify-center h-screen bg-cover bg-center"
-  style={{
-    backgroundImage: `url(https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1600&q=80)`
-  }}
->
-  <div className="absolute inset-0 bg-white/70 backdrop-blur-sm" />
-      
-      {/* Text */}
-      <motion.img
-  src="/rangaliya-home-art/images/rangaliya-text.png"
-  alt="Rangaliya"
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: showText ? 1 : 0, y: showText ? 0 : -20 }}
-  transition={{ duration: 0.6 }}
-  className="w-48 md:w-64 absolute"
-/>
+    <div className="flex items-center justify-center h-screen relative overflow-hidden">
 
-      {/* Logo */}
-      <motion.img
-        src={logo}
-        alt="Rangaliya Logo"
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{
-          scale: showText ? 0.8 : 1,
-          opacity: showText ? 0 : 1,
+      {/* Background (same as homepage) */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url(https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1600&q=80)",
         }}
-        transition={{ duration: 0.8 }}
-        className="w-40 md:w-56"
       />
+
+      {/* Soft overlay */}
+      <div className="absolute inset-0 bg-white/70 backdrop-blur-sm" />
+
+      {/* Content */}
+      <div className="relative z-10 flex items-center justify-center w-full h-full">
+
+        {/* TEXT */}
+        <motion.img
+          src={text}
+          alt="Rangaliya"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: phase === "text" ? 1 : 0 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="absolute w-[350px]"
+        />
+
+        {/* LOGO */}
+        <motion.img
+          src={logo}
+          alt="Rangaliya Logo"
+          initial={{ scale: 0.8, opacity: 0, y: 0 }}
+          animate={{
+            scale: phase === "logo" ? 1 : 0.8,
+            opacity: phase === "logo" ? 1 : 0,
+            y: phase === "logo" ? -70 : 0, // move upward
+          }}
+          transition={{
+            duration: 1,
+            ease: "easeInOut",
+          }}
+          className="absolute w-[300px]"
+        />
+
+      </div>
     </div>
   );
 };
