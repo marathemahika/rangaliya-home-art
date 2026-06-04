@@ -4,20 +4,20 @@ import logo from "@/assets/logo.png";
 import text from "@/assets/text.png";
 
 const LogoAnimation = () => {
-  const [phase, setPhase] = useState<"text" | "logo">("text");
+  const [phase, setPhase] = useState("text");
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setPhase("logo");
-    }, 2000);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="flex items-center justify-center h-screen relative overflow-hidden">
-
-      {/* Background (same as homepage) */}
+      
+      {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
@@ -26,8 +26,18 @@ const LogoAnimation = () => {
         }}
       />
 
-      {/* Soft overlay */}
-      <div className="absolute inset-0 bg-white/70 backdrop-blur-sm" />
+      {/* Overlay */}
+      <motion.div
+        className="absolute inset-0 bg-white/70 backdrop-blur-sm"
+        animate={{
+          backdropFilter:
+            phase === "logo" ? "blur(2px)" : "blur(8px)",
+        }}
+        transition={{
+          duration: 1.5,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+      />
 
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center w-full h-full">
@@ -36,9 +46,18 @@ const LogoAnimation = () => {
         <motion.img
           src={text}
           alt="Rangaliya"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: phase === "text" ? 1 : 0 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          initial={{
+            opacity: 0,
+            scale: 0.95,
+          }}
+          animate={{
+            opacity: phase === "text" ? 1 : 0,
+            scale: phase === "text" ? 1 : 1.08,
+          }}
+          transition={{
+            duration: 1,
+            ease: [0.22, 1, 0.36, 1],
+          }}
           className="absolute w-[350px]"
         />
 
@@ -46,19 +65,24 @@ const LogoAnimation = () => {
         <motion.img
           src={logo}
           alt="Rangaliya Logo"
-          initial={{ scale: 0.8, opacity: 0, y: 0 }}
+          initial={{
+            scale: 0.7,
+            opacity: 0,
+            y: 60,
+          }}
           animate={{
-            scale: phase === "logo" ? 1 : 0.8,
+            scale: phase === "logo" ? 1 : 0.7,
             opacity: phase === "logo" ? 1 : 0,
-            y: phase === "logo" ? -70 : 0, // move upward
+            y: phase === "logo" ? -70 : 60,
           }}
           transition={{
-            duration: 1,
-            ease: "easeInOut",
+            type: "spring",
+            stiffness: 60,
+            damping: 15,
+            mass: 1,
           }}
           className="absolute w-[300px]"
         />
-
       </div>
     </div>
   );
