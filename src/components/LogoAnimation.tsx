@@ -4,9 +4,9 @@ import logo from "@/assets/logo.png";
 import text from "@/assets/text.png";
 
 const LogoAnimation = () => {
-  const [phase, setPhase] = useState<
-    "text" | "logoCenter" | "logoTop"
-  >("text");
+  const [phase, setPhase] = useState<"text" | "logoCenter" | "logoTop">(
+    "text"
+  );
 
   useEffect(() => {
     // Text -> Logo
@@ -14,7 +14,7 @@ const LogoAnimation = () => {
       setPhase("logoCenter");
     }, 1800);
 
-    // Pause logo in center, then move up
+    // Logo pause -> Move up
     const timer2 = setTimeout(() => {
       setPhase("logoTop");
     }, 3200);
@@ -26,7 +26,7 @@ const LogoAnimation = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative h-screen overflow-hidden flex items-center justify-center">
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -39,9 +39,8 @@ const LogoAnimation = () => {
       {/* Overlay */}
       <div className="absolute inset-0 bg-white/70 backdrop-blur-sm" />
 
-      {/* Logo Animation Layer */}
-      <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-        
+      {/* Animation Layer */}
+      <div className="relative z-10 flex items-center justify-center w-full h-full">
         {/* TEXT */}
         <motion.img
           src={text}
@@ -67,13 +66,13 @@ const LogoAnimation = () => {
           alt="Rangaliya Logo"
           initial={{
             opacity: 0,
-            scale: 0.8,
+            scale: 0.85,
             y: 0,
           }}
           animate={{
             opacity: phase === "text" ? 0 : 1,
             scale: 1,
-            y: phase === "logoTop" ? -220 : 0,
+            y: phase === "logoTop" ? -80 : 0,
           }}
           transition={{
             duration: 1.2,
@@ -82,39 +81,6 @@ const LogoAnimation = () => {
           className="absolute w-[280px]"
         />
       </div>
-
-      {/* Main Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{
-          opacity: phase === "logoTop" ? 1 : 0,
-          y: phase === "logoTop" ? 0 : 20,
-        }}
-        transition={{
-          duration: 0.8,
-          delay: 0.4,
-        }}
-        className="relative z-10 min-h-screen flex flex-col items-center justify-center"
-      >
-        <h1 className="text-5xl font-bold mb-4">
-          Welcome to Rangaliya
-        </h1>
-
-        <p className="text-lg mb-8 text-center max-w-xl">
-          Discover handcrafted artistry, timeless traditions,
-          and creativity woven into every piece.
-        </p>
-
-        <div className="flex gap-4">
-          <button className="px-6 py-3 bg-black text-white rounded-lg">
-            Explore
-          </button>
-
-          <button className="px-6 py-3 border border-black rounded-lg">
-            Contact
-          </button>
-        </div>
-      </motion.div>
     </div>
   );
 };
