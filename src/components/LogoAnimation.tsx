@@ -9,24 +9,22 @@ const LogoAnimation = () => {
   );
 
   useEffect(() => {
-    // Text -> Logo
-    const timer1 = setTimeout(() => {
+    const textToLogo = setTimeout(() => {
       setPhase("logoCenter");
     }, 1800);
 
-    // Logo pause -> Move up
-    const timer2 = setTimeout(() => {
+    const moveLogoUp = setTimeout(() => {
       setPhase("logoTop");
     }, 3200);
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      clearTimeout(textToLogo);
+      clearTimeout(moveLogoUp);
     };
   }, []);
 
   return (
-    <div className="relative h-screen overflow-hidden flex items-center justify-center">
+    <div className="relative flex items-center justify-center h-screen overflow-hidden">
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -39,7 +37,7 @@ const LogoAnimation = () => {
       {/* Overlay */}
       <div className="absolute inset-0 bg-white/70 backdrop-blur-sm" />
 
-      {/* Animation Layer */}
+      {/* Content */}
       <div className="relative z-10 flex items-center justify-center w-full h-full">
         {/* TEXT */}
         <motion.img
@@ -72,7 +70,7 @@ const LogoAnimation = () => {
           animate={{
             opacity: phase === "text" ? 0 : 1,
             scale: 1,
-            y: phase === "logoTop" ? -80 : 0,
+            y: phase === "logoTop" ? -70 : 0,
           }}
           transition={{
             duration: 1.2,
