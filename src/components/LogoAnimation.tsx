@@ -55,7 +55,7 @@ const LogoAnimation = () => {
           y: 0,
         }}
         transition={{
-          duration: 2,
+          duration: 2.5,
           ease: [0.22, 1, 0.36, 1],
         }}
         style={{ height: "300px" }}
